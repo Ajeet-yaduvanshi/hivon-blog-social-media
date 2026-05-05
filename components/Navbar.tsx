@@ -7,16 +7,17 @@ import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/lib/auth-context';
 
 export function Navbar() {
-  const { user } = useAuth();
+  const { user,refresh } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
 
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
+    await refresh();
     setMenuOpen(false);
-    router.push('/');
-    router.refresh();
+    router.push('/auth/login');
+  
   };
 
   return (
